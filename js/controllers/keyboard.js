@@ -17,6 +17,7 @@ export default class Keyboard {
 		this.bindings = {};
 
 		this.onDocumentKeyDown = this.onDocumentKeyDown.bind( this );
+		this.onDocumentKeyPress = this.onDocumentKeyPress.bind( this );
 
 	}
 
@@ -31,18 +32,17 @@ export default class Keyboard {
 		}
 		else {
 			this.shortcuts['N  ,  SPACE']   = 'Next slide';
-			this.shortcuts['P  ,  Shift SPACE']             = 'Previous slide';
+			this.shortcuts['P']             = 'Previous slide';
 			this.shortcuts['&#8592;  ,  H'] = 'Navigate left';
 			this.shortcuts['&#8594;  ,  L'] = 'Navigate right';
 			this.shortcuts['&#8593;  ,  K'] = 'Navigate up';
 			this.shortcuts['&#8595;  ,  J'] = 'Navigate down';
 		}
 
-		this.shortcuts['Alt + &#8592;/&#8593/&#8594;/&#8595;']        = 'Navigate without fragments';
-		this.shortcuts['Shift + &#8592;/&#8593/&#8594;/&#8595;']      = 'Jump to first/last slide';
+		this.shortcuts['Home  ,  Shift &#8592;']        = 'First slide';
+		this.shortcuts['End  ,  Shift &#8594;']         = 'Last slide';
 		this.shortcuts['B  ,  .']                       = 'Pause';
 		this.shortcuts['F']                             = 'Fullscreen';
-		this.shortcuts['G']                             = 'Jump to slide';
 		this.shortcuts['ESC, O']                        = 'Slide overview';
 
 	}
@@ -53,6 +53,7 @@ export default class Keyboard {
 	bind() {
 
 		document.addEventListener( 'keydown', this.onDocumentKeyDown, false );
+		document.addEventListener( 'keypress', this.onDocumentKeyPress, false );
 
 	}
 
@@ -62,6 +63,7 @@ export default class Keyboard {
 	unbind() {
 
 		document.removeEventListener( 'keydown', this.onDocumentKeyDown, false );
+		document.removeEventListener( 'keypress', this.onDocumentKeyPress, false );
 
 	}
 
@@ -133,6 +135,20 @@ export default class Keyboard {
 	}
 
 	/**
+	 * Handler for the document level 'keypress' event.
+	 *
+	 * @param {object} event
+	 */
+	onDocumentKeyPress( event ) {
+
+		// Check if the pressed key is question mark
+		if( event.shiftKey && event.charCode === 63 ) {
+			this.Reveal.toggleHelp();
+		}
+
+	}
+
+	/**
 	 * Handler for the document level 'keydown' event.
 	 *
 	 * @param {object} event
@@ -166,11 +182,13 @@ export default class Keyboard {
 		let activeElementIsInput = document.activeElement && document.activeElement.tagName && /input|textarea/i.test( document.activeElement.tagName );
 		let activeElementIsNotes = document.activeElement && document.activeElement.className && /speaker-notes/i.test( document.activeElement.className);
 
-		// Whitelist certain modifiers for slide navigation shortcuts
-		let keyCodeUsesModifier = [32, 37, 38, 39, 40, 78, 80, 191].indexOf( event.keyCode ) !== -1;
+		// Whitelist specific modified + keycode combinations
+		let prevSlideShortcut = event.shiftKey && event.keyCode === 32;
+		let firstSlideShortcut = event.shiftKey && keyCode === 37;
+		let lastSlideShortcut = event.shiftKey && keyCode === 39;
 
 		// Prevent all other events when a modifier is pressed
-		let unusedModifier = 	!( keyCodeUsesModifier && event.shiftKey || event.altKey ) &&
+		let unusedModifier = 	!prevSlideShortcut && !firstSlideShortcut && !lastSlideShortcut &&
 								( event.shiftKey || event.altKey || event.ctrlKey || event.metaKey );
 
 		// Disregard the event if there's a focused element or a
@@ -259,58 +277,52 @@ export default class Keyboard {
 
 			// P, PAGE UP
 			if( keyCode === 80 || keyCode === 33 ) {
-				this.Reveal.prev({skipFragments: event.altKey});
+				this.Reveal.prev();
 			}
 			// N, PAGE DOWN
 			else if( keyCode === 78 || keyCode === 34 ) {
-				this.Reveal.next({skipFragments: event.altKey});
+				this.Reveal.next();
 			}
 			// H, LEFT
 			else if( keyCode === 72 || keyCode === 37 ) {
-				if( event.shiftKey ) {
+				if( firstSlideShortcut ) {
 					this.Reveal.slide( 0 );
 				}
 				else if( !this.Reveal.overview.isActive() && useLinearMode ) {
-					this.Reveal.prev({skipFragments: event.altKey});
+					this.Reveal.prev();
 				}
 				else {
-					this.Reveal.left({skipFragments: event.altKey});
+					this.Reveal.left();
 				}
 			}
 			// L, RIGHT
 			else if( keyCode === 76 || keyCode === 39 ) {
-				if( event.shiftKey ) {
-					this.Reveal.slide( this.Reveal.getHorizontalSlides().length - 1 );
+				if( lastSlideShortcut ) {
+					this.Reveal.slide( Number.MAX_VALUE );
 				}
 				else if( !this.Reveal.overview.isActive() && useLinearMode ) {
-					this.Reveal.next({skipFragments: event.altKey});
+					this.Reveal.next();
 				}
 				else {
-					this.Reveal.right({skipFragments: event.altKey});
+					this.Reveal.right();
 				}
 			}
 			// K, UP
 			else if( keyCode === 75 || keyCode === 38 ) {
-				if( event.shiftKey ) {
-					this.Reveal.slide( undefined, 0 );
-				}
-				else if( !this.Reveal.overview.isActive() && useLinearMode ) {
-					this.Reveal.prev({skipFragments: event.altKey});
+				if( !this.Reveal.overview.isActive() && useLinearMode ) {
+					this.Reveal.prev();
 				}
 				else {
-					this.Reveal.up({skipFragments: event.altKey});
+					this.Reveal.up();
 				}
 			}
 			// J, DOWN
 			else if( keyCode === 74 || keyCode === 40 ) {
-				if( event.shiftKey ) {
-					this.Reveal.slide( undefined, Number.MAX_VALUE );
-				}
-				else if( !this.Reveal.overview.isActive() && useLinearMode ) {
-					this.Reveal.next({skipFragments: event.altKey});
+				if( !this.Reveal.overview.isActive() && useLinearMode ) {
+					this.Reveal.next();
 				}
 				else {
-					this.Reveal.down({skipFragments: event.altKey});
+					this.Reveal.down();
 				}
 			}
 			// HOME
@@ -319,7 +331,7 @@ export default class Keyboard {
 			}
 			// END
 			else if( keyCode === 35 ) {
-				this.Reveal.slide( this.Reveal.getHorizontalSlides().length - 1 );
+				this.Reveal.slide( Number.MAX_VALUE );
 			}
 			// SPACE
 			else if( keyCode === 32 ) {
@@ -327,14 +339,14 @@ export default class Keyboard {
 					this.Reveal.overview.deactivate();
 				}
 				if( event.shiftKey ) {
-					this.Reveal.prev({skipFragments: event.altKey});
+					this.Reveal.prev();
 				}
 				else {
-					this.Reveal.next({skipFragments: event.altKey});
+					this.Reveal.next();
 				}
 			}
 			// TWO-SPOT, SEMICOLON, B, V, PERIOD, LOGITECH PRESENTER TOOLS "BLACK SCREEN" BUTTON
-			else if( [58, 59, 66, 86, 190].includes( keyCode ) || ( keyCode === 191 && !event.shiftKey ) ) {
+			else if( keyCode === 58 || keyCode === 59 || keyCode === 66 || keyCode === 86 || keyCode === 190 || keyCode === 191 ) {
 				this.Reveal.togglePause();
 			}
 			// F
@@ -343,19 +355,9 @@ export default class Keyboard {
 			}
 			// A
 			else if( keyCode === 65 ) {
-				if( config.autoSlideStoppable ) {
+				if ( config.autoSlideStoppable ) {
 					this.Reveal.toggleAutoSlide( autoSlideWasPaused );
 				}
-			}
-			// G
-			else if( keyCode === 71 ) {
-				if( config.jumpToSlide ) {
-					this.Reveal.toggleJumpToSlide();
-				}
-			}
-			// ?
-			else if( keyCode === 191 && event.shiftKey ) {
-				this.Reveal.toggleHelp();
 			}
 			else {
 				triggered = false;
