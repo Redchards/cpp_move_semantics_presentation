@@ -1,0 +1,4 @@
+TODO :
+implementation of std::move : no magic
+why std::move two times? Rvalue ref is an lvalue itself
+prvalue = guaranteed "copy elision"
