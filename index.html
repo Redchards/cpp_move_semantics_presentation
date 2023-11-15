@@ -295,44 +295,13 @@
                     <section data-auto-animate>
                         <h3>Introductory example</h3>
                         <pre data-id="code-animation"><code class="language-cpp" data-trim data-line-numbers=0-18><script type="text/template">
-                            class CopyConstructible
-                            {
-                            public:
-                            // Rule of 5
-                            // other copy/move constructors/operators and destructor 
-                            // are implicitely deleted
-                                CopyConstructible(const CopyConstructible& other) 
-                                : buffer{ new BigObject(other.buffer) } 
-                                {}
-
-                                ~CopyConstructible() { if (buffer) delete buffer; }
-
-                            private:
-                                BigObject* buffer;
-                            };
-
-                            CopyConstructible process(const CopyConstructible& obj)
-                            {
-                                auto modified_obj = obj; // copy
-                                // do something with our modified_obj
-                                return modified_obj; // assume NRVO
-                            }
-
-                            CopyConstructible c1 = make_big_copy_constructible_object(...);
-                            auto c2 = process(c1); // copy
-                            // :(
-                        </script></code></pre>
-                    </section>
-                    <section data-auto-animate>
-                        <h3>Introductory example</h3>
-                        <pre data-id="code-animation"><code class="language-cpp" data-trim data-line-numbers=0-18><script type="text/template">
                             class MoveConstructible
                             {
                             public:
                             // Rule of 5
                             // other copy/move constructors/operators and destructor 
                             // are implicitely deleted
-                                MoveConstructible(CopyConstructible&& other) 
+                                MoveConstructible(MoveConstructible&& other) 
                                 : buffer{ other.buffer } 
                                 {
                                     // We're stealing the resource, we want sole ownership
@@ -366,7 +335,7 @@
                             // Rule of 5
                             // other copy/move constructors/operators and destructor 
                             // are implicitely deleted
-                                MoveConstructible(CopyConstructible&& other) 
+                                MoveConstructible(MoveConstructible&& other) 
                                 : buffer{ other.buffer } 
                                 {
                                     // We're stealing the resource, we want sole ownership
@@ -400,7 +369,7 @@
                             // Rule of 5
                             // other copy/move constructors/operators and destructor 
                             // are implicitely deleted
-                                MoveConstructible(CopyConstructible&& other) 
+                                MoveConstructible(MoveConstructible&& other) 
                                 : buffer{ other.buffer } 
                                 {
                                     // We're stealing the resource, we want sole ownership
@@ -444,7 +413,7 @@
                             auto std::move(T&& t)
                             {
                                 // Too difficult to write here
-                                // Insert crazy guru code that nobody can understand here
+                                // Insert crazy guru code that no sane person can comprehend
                             }
                         </script></code></pre>
                     </section>
