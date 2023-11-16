@@ -564,7 +564,6 @@
                     <section data-auto-animate>
                         <h3>Quiz time!</h3>
                         <p style="display: block; text-align: left;">What is the output of each call?</p>
-                        <a href="https://godbolt.org/z/nhE9ExGGe">Runnable demo</a>
                         <pre data-id="code-animation"><code class="language-cpp" data-trim data-line-numbers><script type="text/template">
                             struct Blob
                             {};
@@ -573,20 +572,98 @@
                             void process(Blob&) { std::cout <<  "lvalue ref" << std::endl; }
                             void process(Blob&&) { std::cout << "rvalue ref" << std::endl; }
 
-                            int main()
-                            {
-                                Blob blobby{};
+                            // ...
+                            Blob blobby{};
 
-                                process(blobby);             // ? 
-                                process(&blobby);            // ?
-                                process(Blob{});             // ?
-                                process(std::move(blobby));  // ?
-                            }
+                            process(blobby);             // ? 
+                            process(&blobby);            // ?
+                            process(Blob{});             // ?
+                            process(std::move(blobby));  // ?
                         </script></code></pre>
                     </section>
                     <section data-auto-animate>
                         <h3>Quiz time!</h3>
-                        <p style="display: block; text-align: left;">What overload will be called in each case?</p>
+                        <p style="display: block; text-align: left;">What is the output of each call?</p>
+                        <pre data-id="code-animation"><code class="language-cpp" data-trim data-line-numbers><script type="text/template">
+                            struct Blob
+                            {};
+
+                            void process(Blob*) { std::cout <<  "pointer" << std::endl; }
+                            void process(Blob&) { std::cout <<  "lvalue ref" << std::endl; }
+                            void process(Blob&&) { std::cout << "rvalue ref" << std::endl; }
+
+                            // ...
+                            Blob blobby{};
+
+                            process(blobby);             // lvalue ref
+                            process(&blobby);            // ?
+                            process(Blob{});             // ?
+                            process(std::move(blobby));  // ?
+                        </script></code></pre>
+                    </section>
+                    <section data-auto-animate>
+                        <h3>Quiz time!</h3>
+                        <p style="display: block; text-align: left;">What is the output of each call?</p>
+                        <pre data-id="code-animation"><code class="language-cpp" data-trim data-line-numbers><script type="text/template">
+                            struct Blob
+                            {};
+
+                            void process(Blob*) { std::cout <<  "pointer" << std::endl; }
+                            void process(Blob&) { std::cout <<  "lvalue ref" << std::endl; }
+                            void process(Blob&&) { std::cout << "rvalue ref" << std::endl; }
+
+                            // ...
+                            Blob blobby{};
+
+                            process(blobby);             // lvalue ref
+                            process(&blobby);            // pointer
+                            process(Blob{});             // ?
+                            process(std::move(blobby));  // ?
+                        </script></code></pre>
+                    </section>
+                    <section data-auto-animate>
+                        <h3>Quiz time!</h3>
+                        <p style="display: block; text-align: left;">What is the output of each call?</p>
+                        <pre data-id="code-animation"><code class="language-cpp" data-trim data-line-numbers><script type="text/template">
+                            struct Blob
+                            {};
+
+                            void process(Blob*) { std::cout <<  "pointer" << std::endl; }
+                            void process(Blob&) { std::cout <<  "lvalue ref" << std::endl; }
+                            void process(Blob&&) { std::cout << "rvalue ref" << std::endl; }
+
+                            // ...
+                            Blob blobby{};
+
+                            process(blobby);             // lvalue ref
+                            process(&blobby);            // pointer
+                            process(Blob{});             // rvalue ref
+                            process(std::move(blobby));  // ?
+                        </script></code></pre>
+                    </section>
+                    <section data-auto-animate>
+                        <h3>Quiz time!</h3>
+                        <p style="display: block; text-align: left;">What is the output of each call?</p>
+                        <pre data-id="code-animation"><code class="language-cpp" data-trim data-line-numbers><script type="text/template">
+                            struct Blob
+                            {};
+
+                            void process(Blob*) { std::cout <<  "pointer" << std::endl; }
+                            void process(Blob&) { std::cout <<  "lvalue ref" << std::endl; }
+                            void process(Blob&&) { std::cout << "rvalue ref" << std::endl; }
+
+                            // ...
+                            Blob blobby{};
+
+                            process(blobby);             // lvalue ref
+                            process(&blobby);            // pointer
+                            process(Blob{});             // rvalue ref
+                            process(std::move(blobby));  // rvalue ref
+                        </script></code></pre>
+                    </section>
+                    <section data-auto-animate>
+                        <h3>Quiz time!</h3>
+                        <p style="display: block; text-align: left;">What is the output of each call?</p>
                         <a href="https://godbolt.org/z/nhE9ExGGe">Runnable demo</a>
                         <pre data-id="code-animation"><code class="language-cpp" data-trim data-line-numbers><script type="text/template">
                             struct Blob
@@ -596,30 +673,14 @@
                             void process(Blob&) { std::cout <<  "lvalue ref" << std::endl; }
                             void process(Blob&&) { std::cout << "rvalue ref" << std::endl; }
 
-                            int main()
-                            {
-                                Blob blobby{};
+                            // ...
+                            Blob blobby{};
 
-                                process(blobby);             // lvalue ref
-                                process(&blobby);            // pointer
-                                process(Blob{});             // rvalue ref
-                                process(std::move(blobby));  // rvalue ref
-                            }
+                            process(blobby);             // lvalue ref
+                            process(&blobby);            // pointer
+                            process(Blob{});             // rvalue ref
+                            process(std::move(blobby));  // rvalue ref
                         </script></code></pre>
-                    </section>
-                    <section data-auto-animate>
-                        <h3>So?</h3>
-                        <p style="display: block; text-align: left;">Where is the pointer to be moved here?</p>
-                        <pre data-id="code-animation"><code class="language-cpp" data-trim data-line-numbers><script type="text/template">
-                            template<size_t dimension>
-                            struct StaticSquareMatrix
-                            {
-                                using row_t = std::array<double, dimension>;
-                                std::array<row_t, dimension> data;
-                            };
-                            // dimension * dimension * sizeof(double) bytes
-                        </script></code></pre>
-                        <p style="display: block; text-align: left;">No dice, moving won't do us good here...</p>
                     </section>
                 </section>
                 <section>
