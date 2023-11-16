@@ -568,8 +568,8 @@
                             struct Blob
                             {};
 
-                            void process(Blob*) { std::cout <<  "pointer" << std::endl; }
-                            void process(Blob&) { std::cout <<  "lvalue ref" << std::endl; }
+                            void process(Blob*)  { std::cout << "pointer"    << std::endl; }
+                            void process(Blob&)  { std::cout << "lvalue ref" << std::endl; }
                             void process(Blob&&) { std::cout << "rvalue ref" << std::endl; }
 
                             // ...
@@ -588,8 +588,8 @@
                             struct Blob
                             {};
 
-                            void process(Blob*) { std::cout <<  "pointer" << std::endl; }
-                            void process(Blob&) { std::cout <<  "lvalue ref" << std::endl; }
+                            void process(Blob*)  { std::cout << "pointer"    << std::endl; }
+                            void process(Blob&)  { std::cout << "lvalue ref" << std::endl; }
                             void process(Blob&&) { std::cout << "rvalue ref" << std::endl; }
 
                             // ...
@@ -608,8 +608,8 @@
                             struct Blob
                             {};
 
-                            void process(Blob*) { std::cout <<  "pointer" << std::endl; }
-                            void process(Blob&) { std::cout <<  "lvalue ref" << std::endl; }
+                            void process(Blob*)  { std::cout << "pointer"    << std::endl; }
+                            void process(Blob&)  { std::cout << "lvalue ref" << std::endl; }
                             void process(Blob&&) { std::cout << "rvalue ref" << std::endl; }
 
                             // ...
@@ -628,8 +628,8 @@
                             struct Blob
                             {};
 
-                            void process(Blob*) { std::cout <<  "pointer" << std::endl; }
-                            void process(Blob&) { std::cout <<  "lvalue ref" << std::endl; }
+                            void process(Blob*)  { std::cout << "pointer"    << std::endl; }
+                            void process(Blob&)  { std::cout << "lvalue ref" << std::endl; }
                             void process(Blob&&) { std::cout << "rvalue ref" << std::endl; }
 
                             // ...
@@ -648,8 +648,8 @@
                             struct Blob
                             {};
 
-                            void process(Blob*) { std::cout <<  "pointer" << std::endl; }
-                            void process(Blob&) { std::cout <<  "lvalue ref" << std::endl; }
+                            void process(Blob*)  { std::cout << "pointer"    << std::endl; }
+                            void process(Blob&)  { std::cout << "lvalue ref" << std::endl; }
                             void process(Blob&&) { std::cout << "rvalue ref" << std::endl; }
 
                             // ...
@@ -669,8 +669,8 @@
                             struct Blob
                             {};
 
-                            void process(Blob*) { std::cout <<  "pointer" << std::endl; }
-                            void process(Blob&) { std::cout <<  "lvalue ref" << std::endl; }
+                            void process(Blob*)  { std::cout << "pointer"    << std::endl; }
+                            void process(Blob&)  { std::cout << "lvalue ref" << std::endl; }
                             void process(Blob&&) { std::cout << "rvalue ref" << std::endl; }
 
                             // ...
@@ -681,6 +681,76 @@
                             process(Blob{});             // rvalue ref
                             process(std::move(blobby));  // rvalue ref
                         </script></code></pre>
+                    </section>
+                </section>
+                <section>
+                    <section data-auto-animate>
+                        <h3>Quiz time encore!</h3>
+                        <pre data-id="code-animation"><code class="language-cpp" data-trim data-line-numbers><script type="text/template">
+                            struct Blob
+                            {};
+
+                            void process(Blob*)  { std::cout << "pointer"    << std::endl; }
+                            void process(Blob&)  { std::cout << "lvalue ref" << std::endl; }
+                            void process(Blob&&) { std::cout << "rvalue ref" << std::endl; }
+
+                            void consume(Blob&& b) { process(b); }
+
+                            // ...
+                            Blob blobby{};
+
+                            consume(std::move(blobby)); // ?
+                            consume(Blob{});            // ?
+                        </script></code></pre>
+                    </section>
+                    <section data-auto-animate>
+                        <h3>Quiz time encore!</h3>
+                        <pre data-id="code-animation"><code class="language-cpp" data-trim data-line-numbers><script type="text/template">
+                            struct Blob
+                            {};
+
+                            void process(Blob*)  { std::cout << "pointer"    << std::endl; }
+                            void process(Blob&)  { std::cout << "lvalue ref" << std::endl; }
+                            void process(Blob&&) { std::cout << "rvalue ref" << std::endl; }
+
+                            void consume(Blob&& b) { process(b); }
+
+                            // ...
+                            Blob blobby{};
+
+                            consume(std::move(blobby)); // lvalue ref
+                            consume(Blob{});            // ?
+                        </script></code></pre>
+                    </section>
+                    <section data-auto-animate>
+                        <h3>Quiz time encore!</h3>
+                        <pre data-id="code-animation"><code class="language-cpp" data-trim data-line-numbers><script type="text/template">
+                            struct Blob
+                            {};
+
+                            void process(Blob*)  { std::cout << "pointer"    << std::endl; }
+                            void process(Blob&)  { std::cout << "lvalue ref" << std::endl; }
+                            void process(Blob&&) { std::cout << "rvalue ref" << std::endl; }
+
+                            void consume(Blob&& b) { process(b); }
+
+                            // ...
+                            Blob blobby{};
+
+                            consume(std::move(blobby)); // lvalue ref
+                            consume(Blob{});            // lvalue ref
+                        </script></code></pre>
+                        <p class="fragment fade-in">Wait, why?</p>
+                    </section>
+                </section>
+                <section>
+                    <section data-auto-animate>
+                        <h3>It's in the name</h3>
+                        <p>We've got an rvalue-reference, meaning that : </p>
+                        <ul style="display: block; text-align: left;">
+                            <li class="fragment fade-in">The value it's bound to is an rvalue, but it's not itself an rvalue</li>
+                            <li class="fragment fade-in">An rvalue-ref binds to an rvalue, but it itself has a name, and is thus an lvalue</li>
+                        </ul>
                     </section>
                 </section>
                 <section>

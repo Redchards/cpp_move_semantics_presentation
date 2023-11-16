@@ -1,5 +1,4 @@
 TODO :
-why std::move two times? Rvalue ref is an lvalue itself
 prvalue = guaranteed "copy elision"
 compelling example : auto_ptr vs unique_ptr
 what of PODs?
