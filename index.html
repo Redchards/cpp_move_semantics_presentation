@@ -98,9 +98,27 @@
                         <h3>No magic involved!!</h3>
                         <p>If the concept seems trivial to you, it's because it is! Whether a reference is an lvalue-reference or rvalue-reference will only affect the overload resolution, and nothing else!</p>
                         <p>Caveat : constant lvalue references can bind to rvalues.</p>
-                        <p>Let's see some code</p>
                     </section>
                 </section> 
+                <section>
+                    <section data-auto-animate>
+                        <h3>Illustration</h3>
+                        <img src="img/move_anim_1_tsp.png" alt="move-anim-1" width="650" height="450" />
+                    </section>
+                    <section data-auto-animate>
+                        <h3>Illustration</h3>
+                        <img src="img/move_anim_2_tsp.png" alt="move-anim-2" width="650" height="450" />
+                    </section>
+                    <section data-auto-animate>
+                        <h3>Illustration</h3>
+                        <img src="img/move_anim_3_tsp.png" alt="move-anim-3" width="650" height="450" />
+                    </section>
+                    <section data-auto-animate>
+                        <h3>Illustration</h3>
+                        <img src="img/move_anim_3_tsp.png" alt="move-anim-3" width="650" height="450" />
+                        <p>Let's see some code</p>
+                    </section>
+                </section>
                 <section>
                     <section data-auto-animate>
                         <h3>Introductory example</h3>
@@ -394,6 +412,11 @@
                             // :)
                         </script></code></pre>
                     </section>
+                    <section data-auto-animate>
+                        <h3>Introductory example</h3>
+                        <img src="img/move_potatoes.png" alt="move-potatoes" width="875" height="500" />
+                    </section>
+                </section>
                 </section>
                 <section>
                     <section data-auto-animate>
@@ -428,6 +451,108 @@
                             }
                         </script></code></pre>
                         <p class="fade-in">This is a valid implementation</p>
+                    </section>
+                </section>
+                <section>
+                    <section data-auto-animate>
+                        <h3>Small interlude</h3>
+                        <img src="img/interlude_potato.png" alt="interlude_potato" width="450" height="450" />
+                    </section>
+                    <section data-auto-animate>
+                        <h3>Small interlude</h3>
+                        <p style="display: block; text-align: left;">What have we learned?</p>
+                        <ul style="display: block; text-align: left;">
+                            <li class="fragment fade-in"><code class="language-cpp">std::move</code> is not magic, it's a simple cast to rvalue reference</li>
+                            <li class="fragment fade-in">we implement the actual move ourselves, no compiler magic here!</li>
+                        </ul>
+                    </section>
+                </section>
+                <section>
+                    <section data-auto-animate>
+                        <h3>What of PODs?</h3>
+                        <pre data-id="code-animation"><code class="language-cpp" data-trim data-line-numbers><script type="text/template">
+                            template<size_t dimension>
+                            struct StaticSquareMatrix
+                            {
+                                using row_t = std::array<double, dimension>;
+                                std::array<row_t, dimension> data;
+                            };
+                            // dimension * dimension * sizeof(double) bytes
+                        </script></code></pre>
+                    </section>
+                    <section data-auto-animate>
+                        <h3>What of PODs?</h3>
+                        <p style="display: block; text-align: left;">How do you move such an object?</p>
+                        <pre data-id="code-animation"><code class="language-cpp" data-trim data-line-numbers><script type="text/template">
+                            template<size_t dimension>
+                            struct StaticSquareMatrix
+                            {
+                                using row_t = std::array<double, dimension>;
+                                std::array<row_t, dimension> data;
+                            };
+                            // dimension * dimension * sizeof(double) bytes
+                        </script></code></pre>
+                    </section>
+                    <section data-auto-animate>
+                        <h3>What of PODs?</h3>
+                        <p style="display: block; text-align: left;">How do you move such an object?</p>
+                        <pre data-id="code-animation"><code class="language-cpp" data-trim data-line-numbers><script type="text/template">
+                            template<size_t dimension>
+                            struct StaticSquareMatrix
+                            {
+                                using row_t = std::array<double, dimension>;
+                                std::array<row_t, dimension> data;
+                            };
+                            // dimension * dimension * sizeof(double) bytes
+                        </script></code></pre>
+                        <p style="display: block; text-align: left;">Remember, <code class="language-cpp">std::move</code> will not actually <em>move</em> anything for you</p>
+                    </section>
+                </section>
+                <section>
+                    <section data-auto-animate>
+                        <h3>Remember?</h3>
+                        <img src="img/move_anim_1_tsp.png" alt="move-anim-1" width="650" height="450" />
+                    </section>
+                    <section data-auto-animate>
+                        <h3>Remember?</h3>
+                        <img src="img/move_anim_2_tsp.png" alt="move-anim-2" width="650" height="450" />
+                    </section>
+                    <section data-auto-animate>
+                        <h3>Remember?</h3>
+                        <img src="img/move_anim_3_tsp.png" alt="move-anim-3" width="650" height="450" />
+                    </section>
+                    <section data-auto-animate>
+                        <h3>Remember?</h3>
+                        <img src="img/move_potatoes.png" alt="move-potatoes" width="875" height="500" />
+                    </section>
+                </section>
+                <section>
+                    <section data-auto-animate>
+                        <h3>So?</h3>
+                        <p style="display: block; text-align: left;">Where is the pointer to be moved here?</p>
+                        <pre data-id="code-animation"><code class="language-cpp" data-trim data-line-numbers><script type="text/template">
+                            template<size_t dimension>
+                            struct StaticSquareMatrix
+                            {
+                                using row_t = std::array<double, dimension>;
+                                std::array<row_t, dimension> data;
+                            };
+                            // dimension * dimension * sizeof(double) bytes
+                        </script></code></pre>
+                    </section>
+                    <section data-auto-animate>
+                        <h3>So?</h3>
+                        <p style="display: block; text-align: left;">Where is the pointer to be moved here?</p>
+                        <pre data-id="code-animation"><code class="language-cpp" data-trim data-line-numbers><script type="text/template">
+                            template<size_t dimension>
+                            struct StaticSquareMatrix
+                            {
+                                using row_t = std::array<double, dimension>;
+                                std::array<row_t, dimension> data;
+                            };
+                            // dimension * dimension * sizeof(double) bytes
+                        </script></code></pre>
+                        <p style="display: block; text-align: left;">No dice, moving won't do us good here...</p>
                     </section>
                 </section>
                 <section>
