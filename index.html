@@ -755,6 +755,116 @@
                 </section>
                 <section>
                     <section data-auto-animate>
+                        <h3>Let's move on...</h3>
+                        <pre data-id="code-animation"><code class="language-cpp" data-trim data-line-numbers><script type="text/template">
+                            void process(Blob&)  { std::cout << "lvalue ref" << std::endl; }
+                            void process(Blob&&) { std::cout << "rvalue ref" << std::endl; }
+
+                            void consume(Blob&& b) { process(b); }
+
+                            // ...
+                            Blob blobby{};
+
+                            consume(std::move(blobby)); // lvalue ref
+                            consume(Blob{});            // lvalue ref
+                        </script></code></pre>
+                    </section>
+                    <section data-auto-animate>
+                        <h3>Let's move on...</h3>
+                        <pre data-id="code-animation"><code class="language-cpp" data-trim data-line-numbers><script type="text/template">
+                            void process(Blob&)  { std::cout << "lvalue ref" << std::endl; }
+                            void process(Blob&&) { std::cout << "rvalue ref" << std::endl; }
+
+                            void consume(Blob&& b) { process(std::move(b)); }
+
+                            // ...
+                            Blob blobby{};
+
+                            consume(std::move(blobby)); // rvalue ref
+                            consume(Blob{});            // rvalue ref
+                        </script></code></pre>
+                    </section>
+                </section>
+                <section>
+                    <section data-auto-animate>
+                        <h3>Learning to let go</h3>
+                        <p>To pass an rvalue reference to a function or method is to relinquish to ownership of the variable</p>
+                        <p>Using a value after having "moved" it is called a use-after-move, and is considered to be a bug</p>
+                    </section>
+                    <section data-auto-animate>
+                        <h3>Learning to move on...</h3>
+                        <img src="img/sad_empty_potato.png" alt="move-potatoes" width="400" height="400" />
+                        <p><em>An actual depiction of a moved value</em></p>
+                    </section>
+                </section>
+                <section>
+                    <section data-auto-animate>
+                        <h3>Performance...</h3>
+                        <p>Move semantics are often thought of as a tool for performance...</p>
+                    </section>
+                    <section data-auto-animate>
+                        <h3>Ownership!</h3>
+                        <p>Move semantics are often thought of as a tool for performance...</p>
+                        <p>While true, it's first and foremost an great tool to model ownership</p>
+                    </section>
+                </section>
+                <section>
+                    <section data-auto-animate>
+                        <h3>std::auto_ptr and the 40 thieves</h3>
+                        <p>Once upon a time, there was a so-called smart pointer, bearing the modest, although nondescript name, of std::auto_ptr</p>
+                        <p>Its story went a bit like that :</p>
+                    </section>
+                    <section data-auto-animate>
+                        <h3>std::auto_ptr and the 40 thieves</h3>
+                        <pre data-id="code-animation"><code class="language-cpp" data-trim data-line-numbers><script type="text/template">
+                            template<class T>
+                            class auto_ptr
+                            {
+                            public:
+                                auto_ptr() = default;
+                                auto_ptr(T* raw_ptr) : ptr_{ raw_ptr } {}
+                                auto_ptr(const auto_ptr& other) : ptr_{ other.ptr_ }
+                                {
+                                    other.ptr_ = nullptr;
+                                }
+
+                                ~auto_ptr() { delete other.ptr_; }
+
+                            private:
+                                T* ptr_;
+                            };
+                        </script></code></pre>
+                        <p class="fragment fade-in">In a real implementation, you'd use <code class="language-cpp">std::decay_t&ltT&gt*</code></p>
+                    </section>
+                    <section data-auto-animate>
+                        <h3>std::auto_ptr and the 40 thieves</h3>
+                        <pre data-id="code-animation"><code class="language-cpp" data-trim data-line-numbers><script type="text/template">
+                            template<class T>
+                            class auto_ptr
+                            {
+                            public:
+                                auto_ptr() = default;
+                                auto_ptr(T* raw_ptr) : ptr_{ raw_ptr } {}
+                                auto_ptr(const auto_ptr& other) : ptr_{ other.ptr_ }
+                                {
+                                    other.ptr_ = nullptr; // HEY!!! THIEF!!!
+                                }
+
+                                ~auto_ptr() { delete other.ptr_; }
+
+                            private:
+                                T* ptr_;
+                            };
+                        </script></code></pre>
+                    </section>
+                    <section data-auto-animate>
+                        <h3>Ownership!</h3>
+                        <p>Move semantics are often thought of as a tool for performance...</p>
+                        <p>While true, it's first and foremost an great tool to model ownership</p>
+                    </section>
+                </section>
+                <section>
+                    <section data-auto-animate>
                         <h3 data-id="code-title">auto and decltype</h3>
                         <pre data-id="code-animation"><code class="language-cpp" data-trim data-line-numbers><script type="text/template">
                             // auto is particularly handy when the type is potentially hard 

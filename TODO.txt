@@ -2,3 +2,4 @@ TODO :
 prvalue = guaranteed "copy elision"
 compelling example : auto_ptr vs unique_ptr
 what of PODs?
+on returning rvalue refs
