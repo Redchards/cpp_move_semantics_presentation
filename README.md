@@ -3,4 +3,4 @@
 </p>
 
 ## Presentation
-The full presentation is hosted on github pages : https://redchards.github.io/modern-cpp-presentation/
+The full presentation is hosted on github pages : https://redchards.github.io/cpp_move_semantics_presentation/
