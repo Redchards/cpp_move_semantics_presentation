@@ -9,7 +9,7 @@
         <meta name="apple-mobile-web-app-capable" content="yes">
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
-        <title>Modern C++ Overview</title>
+        <title>Deciphering C++'s move semantics</title>
 
         <link rel="stylesheet" href="dist/reset.css">
         <link rel="stylesheet" href="dist/reveal.css">
@@ -1006,8 +1006,22 @@
                         <h3>Main Takeways</h3>
                         <ul style="display: block; text-align: left;">
                             <li class="fragment fade-in">std::move is a cast, nothing else</li>
+                            <li class="fragment fade-in">we don't actually move anything</li>
+                            <li class="fragment fade-in">performance increase through "stealing" pointer to resources</li>
+                            <li class="fragment fade-in">provide a way to define ownership through semantics</li>
                             <li class="fragment fade-in">std::move in a return statement is pessimizing</li>
+                            <li class="fragment fade-in">beware of use-after-move!!!</li>
+                            <li class="fragment fade-in">copies are not (necessarily) your enemy</li>
                         </ul>
+                    </section>
+                </section>
+                <section>
+                    <section data-auto-animate>
+                        <h3>Thank your for your attention!</h3>
+                        <div class="fragment fade-in">
+                            <p>Any question?</p>
+                            <img src="img/happy_potato.png" alt="happy-potato" />
+                        </div>
                     </section>
                 </section>
             </div>
