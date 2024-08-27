@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/ISO_C%2B%2B_Logo.svg/1024px-ISO_C%2B%2B_Logo.svg.png" alt="cpp-logo" width="450">
+  <img src="img/move_semantics_logo.png" alt="cpp-logo" width="250">
 </p>
 
 ## Presentation
