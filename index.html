@@ -789,7 +789,7 @@
                     <section data-auto-animate>
                         <h3>Learning to let go</h3>
                         <p>To pass an rvalue reference to a function or method is to relinquish to ownership of the variable</p>
-                        <p>Using a value after having "moved" it is called a use-after-move, and is considered to be a bug</p>
+                        <p>Using a value after having "moved" it is called a use-after-move, and is <b style="color:red">undefined behavior</b></p>
                     </section>
                     <section data-auto-animate>
                         <h3>Learning to move on...</h3>
@@ -979,7 +979,7 @@
                             </tr>
                             <tr>
                                 <td><code class="language-cpp">return std::move(foo)</code></td>
-                                <td style="color:red">IMPOSSIBLE!</td>
+                                <td style="color:red"><b>IMPOSSIBLE!</b></td>
                                 <td>explicit move</td>
                             </tr></tbody>
                             </table>
@@ -999,6 +999,24 @@
                             void consume(const Foo&& foo); // We *consume* a const value...
                         </script></code></pre>
                         <p class="fragment fade-in">The semantics here don't really make sense</p>
+                    </section>
+                </section>
+                    <section data-auto-animate>
+                        <h3>Don't lie!</h3>
+                        <pre data-id="code-animation"><code class="language-cpp" data-trim data-line-numbers><script type="text/template">
+                            class Foo { ... };
+                        
+                            void consume_food(Foo&& foo){ ... }
+                            
+                            void borrow_foo(Foo& foo)
+                            {
+                                // ...
+                                // We lied, we're stealing, not borrowing
+                                consume_foo(std::move(foo));
+                            }
+                        </script></code></pre>
+                        <p class="fragment fade-in" style="display: block; text-align: left;">While it's technically valid C++, breaking the contract with our user is <b>greatly</b> discouraged</p>
+                        <p class="fragment fade-in" style="display: block; text-align: left;">Move semantics are a tool to define ownership, so use it as such!</p>
                     </section>
                 </section>
                 <section>
