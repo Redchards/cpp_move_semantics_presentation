@@ -183,7 +183,7 @@
                     </section>
                     <section data-auto-animate>
                         <h3>Introductory example</h3>
-                        <p>Two copies. Copy elision can happen but is not guaranteed...</p>
+                        <p>Two copies. Copy elision can happen but is not guaranteed... (before C++17)</p>
                         <pre data-id="code-animation"><code class="language-cpp" data-trim data-line-numbers=17-25><script type="text/template">
                             class CopyConstructible
                             {
@@ -332,7 +332,7 @@
                                 BigObject* buffer;
                             };
 
-                            MoveConstructible process(const CopyConstructible& obj)
+                            MoveConstructible process(MoveConstructible&& obj)
                             {
                                 auto modified_obj = obj; // copy
                                 // do something with our modified_obj
@@ -366,7 +366,7 @@
                                 BigObject* buffer;
                             };
 
-                            MoveConstructible process(const CopyConstructible& obj)
+                            MoveConstructible process(MoveConstructible&& obj)
                             {
                                 auto modified_obj = obj; // copy
                                 // do something with our modified_obj
@@ -833,7 +833,7 @@
                             public:
                                 auto_ptr() = default;
                                 auto_ptr(T* raw_ptr) : ptr_{ raw_ptr } {}
-                                auto_ptr(const auto_ptr& other) : ptr_{ other.ptr_ }
+                                auto_ptr(auto_ptr& other) : ptr_{ other.ptr_ }
                                 {
                                     other.ptr_ = nullptr;
                                 }
@@ -855,7 +855,7 @@
                             public:
                                 auto_ptr() = default;
                                 auto_ptr(T* raw_ptr) : ptr_{ raw_ptr } {}
-                                auto_ptr(const auto_ptr& other) : ptr_{ other.ptr_ }
+                                auto_ptr(auto_ptr& other) : ptr_{ other.ptr_ }
                                 {
                                     other.ptr_ = nullptr; // HEY!!! THIEF!!!
                                 }
