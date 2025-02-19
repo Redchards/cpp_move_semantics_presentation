@@ -96,7 +96,7 @@
                 <section>
                     <section>
                         <h3>No magic involved!!</h3>
-                        <p>If the concept seems trivial to you, it's because it is! Whether a reference is an lvalue-reference or rvalue-reference will only affect the overload resolution, and nothing else!</p>
+                        <p>If the concept seems trivial to you, it's because it is! Whether a reference is an lvalue reference or rvalue reference will only affect the overload resolution, and nothing else!</p>
                         <p>Caveat : constant lvalue references can bind to rvalues.</p>
                     </section>
                 </section> 
@@ -418,8 +418,18 @@
                     </section>
                     <section data-auto-animate>
                         <h3>Introductory example</h3>
-                        <p>Warning : if you have not defined a move constructor/operator, the copy constructor/operator will be called</p>
+                        <p>Warning : if you have not defined a move constructor/operator, or they are not generated, the copy constructor/operator will be called</p>
                         <img src="img/move_potatoes.png" alt="move-potatoes" width="875" height="500" />
+                    </section>
+                    <section data-auto-animate>
+                        <h3>Introductory example : rule of 5</h3>
+                        <p>Remember, the move constructor will only be generated if :</p>
+                        <ul style="display: block; text-align: left;">
+                            <li class="fragment fade-in">The class does not have a user-declared copy constructor</li>
+                            <li class="fragment fade-in">The class does not have a user-declared copy assignment operator</li>
+                            <li class="fragment fade-in">The class does not have a user-declared move assignment operator</li>
+                            <li class="fragment fade-in">The class does not have a user-declared destructor</li>
+                        </ul>
                     </section>
                 </section>
                 </section>
@@ -468,7 +478,7 @@
                         <p style="display: block; text-align: left;">What have we learned?</p>
                         <ul style="display: block; text-align: left;">
                             <li class="fragment fade-in"><code class="language-cpp">std::move</code> is not magic, it's a simple cast to rvalue reference</li>
-                            <li class="fragment fade-in">we implement the actual move ourselves, no compiler magic here!</li>
+                            <li class="fragment fade-in">we have to implement the actual move operation ourselves, no compiler magic here!</li>
                         </ul>
                     </section>
                 </section>
@@ -746,10 +756,10 @@
                 <section>
                     <section data-auto-animate>
                         <h3>It's in the name</h3>
-                        <p>We've got an rvalue-reference, meaning that : </p>
+                        <p>We've got an rvalue reference, meaning that : </p>
                         <ul style="display: block; text-align: left;">
                             <li class="fragment fade-in">The value it's bound to is an rvalue, but it's not itself an rvalue</li>
-                            <li class="fragment fade-in">An rvalue-ref binds to an rvalue, but it itself has a name, and is thus an lvalue</li>
+                            <li class="fragment fade-in">An rvalue reference binds to an rvalue, but it itself has a name, and is thus an lvalue</li>
                         </ul>
                     </section>
                 </section>
@@ -935,7 +945,7 @@
                     <section>
                         <h3>Copy elision</h3>
                         <p class="fragment fade-in" style="display: block; text-align: left;">The name "copy elision" is actually fairly misleading. From the standard's point of view, in the cases where it applies, it means that no copy can possibly take place. So, in that sense, no copy is ever elided, no copy was ever supposed to exist.</p>
-                        <p class="fragment fade-in" style="display: block; text-align: left;">However, compilers are not always fully standard compliant</p>
+                        <p class="fragment fade-in" style="display: block; text-align: left;">However, compilers are not always fully standard compliant.</p>
                     </section>
                     <section data-auto-animate>
                         <h3>Taking advantage of the RVOs</h3>
@@ -1023,7 +1033,7 @@
                     <section data-auto-animate>
                         <h3>Main Takeways</h3>
                         <ul style="display: block; text-align: left;">
-                            <li class="fragment fade-in">std::move is a cast, nothing else</li>
+                            <li class="fragment fade-in"><code class="language-cpp">std::move</code> is a cast, nothing else</li>
                             <li class="fragment fade-in">we don't actually move anything</li>
                             <li class="fragment fade-in">performance increase through "stealing" pointer to resources</li>
                             <li class="fragment fade-in">provide a way to define ownership through semantics</li>
@@ -1046,6 +1056,7 @@
                         <p class="fragment fade-in">As defined in <em>elements of programming, 1.5 : Regular Types</em></p>
                         <p class="fragment fade-in">Valid for assignment but not for use</p>
                         <p class="fragment fade-in">Uninitialized variables are partially formed values</p>
+                        <p class="fragment fade-in">But not <code class="language-cpp">moved-from</code> values</p>
                     </section>
                     <section data-auto-animate>
                         <h3>The Standard Definition</h3>
@@ -1058,6 +1069,8 @@
                         <p class="fragment fade-in"><em>Frankly quite restrictive</em></p>
                         <p class="fragment fade-in" style="color: red"><em>Just because the standard guarantees it doesn't mean that people will conform to it</em></p>
                         <p class="fragment fade-in">Don't trust a <code class="language-cpp">moved-from</code> value! Learn to move on...</p>
+                        <p class="fragment fade-in">Or assign a new value to give it a new life!</p>
+                        <img class="fragment fade-in" src="img/happy_move_potato.png" alt="happy-move-potatoes" width="200" height="200" />
                     </section>
                 </section>
                 <section>
